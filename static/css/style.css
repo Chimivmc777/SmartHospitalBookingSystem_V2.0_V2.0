@@ -814,3 +814,69 @@ margin-top:20px;
 }
 
 }
+
+/* ==========================================
+   DASHBOARD PREMIUM CARDS
+========================================== */
+
+.dashboard-card{
+
+    transition:.35s;
+
+    cursor:pointer;
+
+}
+
+.dashboard-card:hover{
+
+    transform:translateY(-10px);
+
+    box-shadow:0 20px 35px rgba(0,0,0,.20);
+
+}
+
+.dashboard-card i{
+
+    opacity:.95;
+
+}
+
+.dashboard-card h2{
+
+    font-size:2.4rem;
+
+    font-weight:700;
+
+}
+
+/* ===============================
+   PREMIUM QUICK ACCESS CARDS
+================================ */
+
+.quick-card{
+
+    transition:.35s;
+
+    cursor:pointer;
+
+}
+
+.quick-card:hover{
+
+    transform:translateY(-12px);
+
+    box-shadow:0 25px 45px rgba(0,0,0,.18);
+
+}
+
+.quick-card i{
+
+    transition:.35s;
+
+}
+
+.quick-card:hover i{
+
+    transform:scale(1.15);
+
+}

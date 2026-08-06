@@ -233,14 +233,44 @@ def patient_login():
 def patient_dashboard():
 
     if "patient_id" not in session:
-
         flash("Please login first.", "warning")
-
         return redirect("/patient/login")
+
+    patient_id = session["patient_id"]
+
+    cur = mysql.connection.cursor()
+
+    # Get unread notifications
+    cur.execute("""
+        SELECT
+            notification_id,
+            title,
+            message,
+            created_at
+        FROM notifications
+        WHERE patient_id=%s
+        AND is_read=0
+        ORDER BY created_at DESC
+    """, (patient_id,))
+
+    notifications = cur.fetchall()
+
+    # Mark notifications as read
+    cur.execute("""
+        UPDATE notifications
+        SET is_read=1
+        WHERE patient_id=%s
+        AND is_read=0
+    """, (patient_id,))
+
+    mysql.connection.commit()
+
+    cur.close()
 
     return render_template(
         "patient/dashboard.html",
-        patient=session["patient_name"]
+        patient=session["patient_name"],
+        notifications=notifications
     )
 
 
@@ -1266,13 +1296,39 @@ def doctor_confirm(id):
 
     cur = mysql.connection.cursor()
 
+    # Get patient information before confirming
     cur.execute("""
-        UPDATE appointments
-        SET status='Confirmed'
+        SELECT patient_id
+        FROM appointments
         WHERE appointment_id=%s
     """, (id,))
 
-    mysql.connection.commit()
+    patient = cur.fetchone()
+
+    if patient:
+
+        patient_id = patient[0]
+
+        # Confirm appointment
+        cur.execute("""
+            UPDATE appointments
+            SET status='Confirmed'
+            WHERE appointment_id=%s
+        """, (id,))
+
+        # Create notification
+        cur.execute("""
+            INSERT INTO notifications
+            (patient_id, title, message)
+
+            VALUES (%s, %s, %s)
+        """, (
+            patient_id,
+            "Appointment Confirmed",
+            "Your appointment has been confirmed by the doctor."
+        ))
+
+        mysql.connection.commit()
 
     cur.close()
 
