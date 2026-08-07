@@ -19,11 +19,19 @@ print("=" * 60)
 print("RUNNING APP FROM:")
 print(os.path.abspath(__file__))
 print("=" * 60)
+
 app = Flask(__name__)
 app.config.from_object(Config)
 
-# Secret Key (Required for Sessions)
+# Secret Key
 app.secret_key = "ehealth_bhutan_secret_key_2026"
+
+# Railway MySQL configuration
+app.config["MYSQL_HOST"] = os.getenv("MYSQL_HOST")
+app.config["MYSQL_PORT"] = int(os.getenv("MYSQL_PORT", "3306"))
+app.config["MYSQL_USER"] = os.getenv("MYSQL_USER")
+app.config["MYSQL_PASSWORD"] = os.getenv("MYSQL_PASSWORD")
+app.config["MYSQL_DB"] = os.getenv("MYSQL_DATABASE")
 
 mysql = MySQL(app)
 
