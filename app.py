@@ -26,12 +26,14 @@ app.config.from_object(Config)
 # Secret Key
 app.secret_key = "ehealth_bhutan_secret_key_2026"
 
-# Railway MySQL configuration
-app.config["MYSQL_HOST"] = os.getenv("MYSQL_HOST")
-app.config["MYSQL_PORT"] = int(os.getenv("MYSQL_PORT", "3306"))
-app.config["MYSQL_USER"] = os.getenv("MYSQL_USER")
-app.config["MYSQL_PASSWORD"] = os.getenv("MYSQL_PASSWORD")
-app.config["MYSQL_DB"] = os.getenv("MYSQL_DATABASE")
+# Check Railway database configuration
+print("===== DATABASE CONFIG CHECK =====")
+print("MYSQL_HOST:", app.config.get("MYSQL_HOST"))
+print("MYSQL_PORT:", app.config.get("MYSQL_PORT"))
+print("MYSQL_USER:", app.config.get("MYSQL_USER"))
+print("MYSQL_DB:", app.config.get("MYSQL_DB"))
+print("MYSQL_PASSWORD SET:", bool(app.config.get("MYSQL_PASSWORD")))
+print("=================================")
 
 mysql = MySQL(app)
 
