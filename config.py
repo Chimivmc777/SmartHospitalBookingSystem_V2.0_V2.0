@@ -9,7 +9,9 @@ class Config:
     MYSQL_PORT = int(os.getenv("MYSQLPORT", "3306"))
     MYSQL_USER = os.getenv("MYSQLUSER")
     MYSQL_PASSWORD = os.getenv("MYSQLPASSWORD")
-    MYSQL_DB = os.getenv("MYSQLDATABASE")
+
+    # Temporary Railway test
+    MYSQL_DB = "railway"
 
     SECRET_KEY = os.getenv(
         "SECRET_KEY",
